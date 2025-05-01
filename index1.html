@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Cards</title>
+    <style>
+        body {
+            padding: 20px;
+        }
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #000000;
+            border-radius: 5px;
+            width: 400px;
+            padding: 10px;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+        .card-title {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .card-button{
+            cursor: pointer;
+            display: block;
+            justify-self: start;
+            padding: 15px 80px 15px 80px;/*top right bottom left*/
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .card-button>a{
+            text-decoration: none;
+            color: black;
+        }
+        .highlight {
+            background-color: rgb(201, 81, 111);
+        }
+    </style>
+</head>
+<body>
+    <h1>My Simple Cards</h1>
+    <div id="cardContainer" class="card-grid"></div>
+
+    <script>
+        // Data for the cards
+        const cardsData = [
+            { id: "1", title: "Title1", description: "Description1", buttonText: "About", buttonUrl: "#1", imageUrl: "https://placehold.co/600x400" },
+            { id: "2", title: "Title3", description: "Description3", buttonText: "About", buttonUrl: "#3", imageUrl: "https://placehold.co/600x400" },
+            { id: "3", title: "Title2", description: "Description2", buttonText: "About", buttonUrl: "#2", imageUrl: "https://placehold.co/600x400" }
+        ];
+
+        const cardContainer = document.getElementById("cardContainer");
+
+        function showCards(cards) {
+            //for each (element of arr cardsData = cardInfo) calls lambda function
+            cards.forEach((cardInfo) => {
+                const cardDiv = document.createElement("div");
+                cardDiv.classList.add("card");
+
+                const img = document.createElement("img");
+                img.src = cardInfo.imageUrl;
+                img.alt = cardInfo.title;
+
+                const title = document.createElement("h3");
+                title.classList.add("card-title");
+                title.textContent = cardInfo.title;
+
+                const description = document.createElement("p");
+                description.textContent = cardInfo.description;
+
+                const button = document.createElement("button");
+                button.classList.add("card-button");
+                const buttonDescription = document.createElement("a");
+                
+                buttonDescription.href = cardInfo.buttonUrl;
+                buttonDescription.textContent = cardInfo.buttonText;
+
+                button.appendChild(buttonDescription);
+                
+
+                cardDiv.appendChild(img);
+                cardDiv.appendChild(title);
+                cardDiv.appendChild(description);
+                cardDiv.appendChild(button);
+
+                button.addEventListener("click", () => {                
+                    console.log(`Card's "${cardInfo.title}" button was clicked!`);
+                    event.stopPropagation();
+                });
+                cardDiv.addEventListener("click", () => {
+                    cardDiv.classList.toggle("highlight");
+                    console.log(`Card "${cardInfo.title}" clicked!`);
+                });
+
+                cardContainer.appendChild(cardDiv);
+            });
+        }
+
+        showCards(cardsData);
+
+        // Array Methods Practice
+
+        // Use .reduce() to calculate and log the total number of characters in all card titles.
+        const totalTitleLength = cardsData.reduce((sum, card) => sum + card.title.length, 0);
+        console.log("Total title characters:", totalTitleLength);
+
+        // Use .sort() to sort the cards alphabetically by title and log the sorted array.
+        //[...arr] - (Copy array by value) spread the array into a list of parameters then put the result into a new array
+        cardsData.sort((a, b) => a.title > b.title ? 1 : -1);
+        console.log(cardsData);
+        console.log("Sorted by title:", cardsData);
+
+        // Use .filter() to find and log all cards where the description contains a specific word (for example, "JavaScript" or "project").
+        const filteredCards = cardsData.filter(card => card.description.includes("2"));//find - 1, filter - array
+        console.log("Cards with '2':", filteredCards);
+
+        const filteredCards1 = cardsData.filter(card => card.description === "Description3");
+        console.log("Cards with 'description3':", filteredCards1);
+
+        // Use .map() to create a new array containing only the titles of all cards, and log this array.
+        const justTitles = cardsData.map(card => card.title);
+        console.log("Just titles:", justTitles);
+
+    </script>
+</body>
+</html>
